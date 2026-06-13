@@ -1,11 +1,17 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/style.css';
-
 // ============================================
 // متجر هيما ستور - ملف الجافاسكريبت
 // ============================================
+// 
+// 🖼️ كيف تضيف صورك الخاصة:
+// 1. أنشئ مجلد "images" في نفس مجلد index.html
+// 2. ضع صورك داخل المجلد
+// 3. غيّل الروابط أدناه من روابط الإنترنت إلى:
+//    image: "images/اسم-الصورة.jpg"
+//
+// ============================================
 
 // بيانات المنتجات - عدّل هنا صورك ومعلوماتك
+// ⚠️ غيّل "image:" لكل منتج لصورة من مجلد images/
 const products = [
     { 
         id: 1, 
@@ -13,6 +19,7 @@ const products = [
         category: "men", 
         price: 149, 
         oldPrice: 199, 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product1.jpg"
         image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&q=80", 
         badge: "sale", 
         rating: 4.8, 
@@ -24,6 +31,7 @@ const products = [
         category: "women", 
         price: 299, 
         oldPrice: 399, 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product2.jpg"
         image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80", 
         badge: "new", 
         rating: 4.9, 
@@ -35,7 +43,8 @@ const products = [
         category: "kids", 
         price: 129, 
         oldPrice: 179, 
-        image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&q=80", 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product3.jpg"
+        image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2f0?w=400&q=80", 
         badge: "sale", 
         rating: 4.7, 
         reviews: 56 
@@ -46,6 +55,7 @@ const products = [
         category: "men", 
         price: 459, 
         oldPrice: 599, 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product4.jpg"
         image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80", 
         badge: "sale", 
         rating: 4.9, 
@@ -57,6 +67,7 @@ const products = [
         category: "women", 
         price: 189, 
         oldPrice: 249, 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product5.jpg"
         image: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=400&q=80", 
         badge: "new", 
         rating: 4.6, 
@@ -68,6 +79,7 @@ const products = [
         category: "kids", 
         price: 79, 
         oldPrice: 99, 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product6.jpg"
         image: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=400&q=80", 
         badge: "new", 
         rating: 4.8, 
@@ -79,6 +91,7 @@ const products = [
         category: "men", 
         price: 199, 
         oldPrice: 259, 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product7.jpg"
         image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80", 
         badge: "", 
         rating: 4.7, 
@@ -90,6 +103,7 @@ const products = [
         category: "women", 
         price: 159, 
         oldPrice: 199, 
+        // ✅ استبدل هذا الرابط بصورتك: image: "images/product8.jpg"
         image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=400&q=80", 
         badge: "sale", 
         rating: 4.5, 
@@ -155,16 +169,6 @@ function setupEventListeners() {
     document.getElementById('searchInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') performSearch();
     });
-
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContactSubmit);
-    }
-
-    const newsletterForm = document.getElementById('newsletterForm');
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', handleNewsletterSubmit);
-    }
 }
 
 // ============================================
@@ -203,7 +207,7 @@ function createProductCard(p) {
         <div class="product-card" onclick="showProductDetail(${p.id})">
             ${badgeText ? `<span class="product-badge ${badgeClass}">${badgeText}</span>` : ''}
             <div class="product-img-wrap">
-                <img src="${p.image}" alt="${p.name}" onerror="this.src='hm_3.jpg'">
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x320/e94560/ffffff?text=${encodeURIComponent(p.name)}'">
                 <div class="product-actions" onclick="event.stopPropagation()">
                     <button class="product-action-btn" onclick="addToCart(${p.id}, 1)"><i class="fas fa-shopping-bag"></i></button>
                     <button class="product-action-btn"><i class="far fa-heart"></i></button>
@@ -285,17 +289,7 @@ function showPage(page) {
 }
 
 function scrollToSection(id) {
-    const el = document.getElementById(id);
-    if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
-
-function showHomeAndScroll(id) {
-    showPage('home');
-    setTimeout(() => {
-        scrollToSection(id);
-    }, 50);
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
 
 // ============================================
@@ -312,9 +306,10 @@ function showProductDetail(id) {
     const price = safeNumber(product.price, 0);
     const oldPrice = safeNumber(product.oldPrice, 0);
 
-    const detailMainImage = document.getElementById('detailMainImage');
-    detailMainImage.src = product.image;
-    detailMainImage.onerror = function() { this.src = 'hm_3.jpg'; };
+    document.getElementById('detailMainImage').src = product.image;
+    document.getElementById('detailMainImage').onerror = function() {
+        this.src = 'https://via.placeholder.com/600x550/e94560/ffffff?text=' + encodeURIComponent(product.name);
+    };
     document.getElementById('detailName').textContent = product.name;
     document.getElementById('detailCategoryLabel').textContent = product.category === 'men' ? 'رجالي' : product.category === 'women' ? 'نسائي' : 'أطفال';
     document.getElementById('detailCategoryLink').textContent = product.category === 'men' ? 'رجالي' : product.category === 'women' ? 'نسائي' : 'أطفال';
@@ -335,7 +330,7 @@ function showProductDetail(id) {
     const thumbs = [product.image, product.image, product.image, product.image];
     document.getElementById('detailThumbs').innerHTML = thumbs.map((img, i) => `
         <div class="gallery-thumb ${i === 0 ? 'active' : ''}" onclick="changeGalleryImage('${img}', this)">
-            <img src="${img}" alt="">
+            <img src="${img}" alt="" onerror="this.src='https://via.placeholder.com/80x80/e94560/ffffff?text=${i+1}'">
         </div>
     `).join('');
 
@@ -424,7 +419,7 @@ function renderCart() {
         return `
             <div class="cart-item">
                 <div class="cart-item-img">
-                    <img src="${item.image}" alt="${item.name}">
+                    <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/100x100/e94560/ffffff?text=Product'">
                 </div>
                 <div class="cart-item-info">
                     <h4>${item.name}</h4>
@@ -461,10 +456,9 @@ function renderCart() {
         }
     });
 
-    const originalTotal = subtotal + discount;
     const total = subtotal;
 
-    document.getElementById('subtotal').textContent = formatPrice(originalTotal) + ' ر.س';
+    document.getElementById('subtotal').textContent = formatPrice(subtotal + discount) + ' ر.س';
     document.getElementById('discount').textContent = formatPrice(discount) + ' ر.س';
     document.getElementById('total').textContent = formatPrice(total) + ' ر.س';
 }
@@ -516,11 +510,9 @@ function filterCategory(cat) {
     showPage('search');
 }
 
-function filterSearch(type, event) {
+function filterSearch(type) {
     document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    if (event && event.target) {
-        event.target.classList.add('active');
-    }
+    event.target.classList.add('active');
 
     let results = products;
     if (type !== 'all') {
@@ -553,7 +545,7 @@ function startSlider() {
     setInterval(() => {
         currentSlide = (currentSlide + 1) % 3;
         goToSlide(currentSlide);
-    }, 9000);
+    }, 5000);
 }
 
 // ============================================
@@ -572,49 +564,7 @@ function toggleMobileMenu() {
     nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
 }
 
-function registerGlobalActions() {
-    window.showPage = showPage;
-    window.showProductDetail = showProductDetail;
-    window.addToCart = addToCart;
-    window.addToCartFromDetail = addToCartFromDetail;
-    window.changeQty = changeQty;
-    window.updateCartQty = updateCartQty;
-    window.removeFromCart = removeFromCart;
-    window.filterCategory = filterCategory;
-    window.filterSearch = filterSearch;
-    window.goToSlide = goToSlide;
-    window.changeGalleryImage = changeGalleryImage;
-    window.toggleMobileMenu = toggleMobileMenu;
-    window.showHomeAndScroll = showHomeAndScroll;
-    window.performSearch = performSearch;
-}
-
-function handleContactSubmit(event) {
-    event.preventDefault();
-    const form = event.target;
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
-    showToast('تم إرسال رسالتك بنجاح!');
-    form.reset();
-}
-
-function handleNewsletterSubmit(event) {
-    event.preventDefault();
-    const form = event.target;
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
-    showToast('تم الاشتراك بنجاح في النشرة!');
-    form.reset();
-}
-
 // ============================================
 // تشغيل عند تحميل الصفحة
 // ============================================
-document.addEventListener('DOMContentLoaded', () => {
-    init();
-    registerGlobalActions();
-});
+document.addEventListener('DOMContentLoaded', init);

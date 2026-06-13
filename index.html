@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>متجر هيما | هيما ستور</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <base target="_blank">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- ========== شريط الإعلانات ========== -->
-   
+    <div class="announcement-bar">
+        <i class="fas fa-shipping-fast"></i>
+        شحن مجاني على الطلبات فوق 200 ريال | <i class="fas fa-undo"></i> إرجاع مجاني خلال 30 يوم
+    </div>
+
     <!-- ========== الهيدر ========== -->
     <header class="header" id="header">
         <div class="header-top">
@@ -49,8 +53,8 @@
                 <li><a href="#" onclick="filterCategory('men'); return false;">رجالي</a></li>
                 <li><a href="#" onclick="filterCategory('women'); return false;">نسائي</a></li>
                 <li><a href="#" onclick="filterCategory('kids'); return false;">أطفال</a></li>
-                <li><a href="#" onclick="showHomeAndScroll('bestsellers'); return false;">الأكثر مبيعاً</a></li>
-                <li><a href="#" onclick="showHomeAndScroll('brandsSection'); return false;">الماركات</a></li>
+                <li><a href="#" onclick="showPage('search'); return false;">الأكثر مبيعاً</a></li>
+                <li><a href="#" onclick="showPage('search'); return false;">الماركات</a></li>
                 <li><a href="#" onclick="showPage('contact'); return false;">تواصل معنا</a></li>
             </ul>
         </nav>
@@ -84,7 +88,7 @@
                 </div>
             </div>
             <div class="hero-slide">
-                <div class="hero-slide-bg" style="background-image: url('adidas_3.jpg'), url('hm_3.png')"></div>
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1519238263530-99bdd11df2f0?w=1920&q=80')"></div>
                 <div class="hero-content">
                     <span class="hero-badge">جديد الأطفال</span>
                     <h1 class="hero-title">أناقة <span>صغارنا</span> تبدأ من هنا</h1>
@@ -94,7 +98,6 @@
                     </a>
                 </div>
             </div>
-           
 
             <div class="hero-thumbs">
                 <div class="hero-thumb active" onclick="goToSlide(0)">
@@ -104,7 +107,7 @@
                     <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=200&q=80" alt="عروض نهاية الموسم">
                 </div>
                 <div class="hero-thumb" onclick="goToSlide(2)">
-                    <img src="adidas_3.jpg" alt="أطفال">
+                    <img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2f0?w=200&q=80" alt="أطفال">
                 </div>
             </div>
         </section>
@@ -156,7 +159,7 @@
         </section>
 
         <!-- ===== الماركات العالمية ===== -->
-        <section class="section" id="brandsSection">
+        <section class="section">
             <div class="section-header">
                 <span class="section-label">شركاؤنا</span>
                 <h2 class="section-title">الماركات العالمية</h2>
@@ -170,10 +173,10 @@
             <div class="newsletter-content">
                 <h2>اشترك في نشرتنا البريدية</h2>
                 <p>احصل على آخر العروض والتخفيضات الحصرية مباشرة إلى بريدك الإلكتروني</p>
-                <form id="newsletterForm" class="newsletter-form" novalidate>
-                    <input type="email" name="newsletterEmail" placeholder="أدخل بريدك الإلكتروني" required>
-                    <button type="submit">اشترك الآن</button>
-                </form>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="أدخل بريدك الإلكتروني">
+                    <button onclick="showToast('تم الاشتراك بنجاح!')">اشترك الآن</button>
+                </div>
             </div>
         </section>
     </div>
@@ -292,11 +295,11 @@
             <p style="color: var(--gray);">تم العثور على <strong id="searchCount">0</strong> منتج</p>
         </div>
         <div class="search-filters">
-            <button class="filter-chip active" onclick="filterSearch('all', event)">الكل</button>
-            <button class="filter-chip" onclick="filterSearch('men', event)">رجالي</button>
-            <button class="filter-chip" onclick="filterSearch('women', event)">نسائي</button>
-            <button class="filter-chip" onclick="filterSearch('kids', event)">أطفال</button>
-            <button class="filter-chip" onclick="filterSearch('sale', event)">تخفيضات</button>
+            <button class="filter-chip active" onclick="filterSearch('all')">الكل</button>
+            <button class="filter-chip" onclick="filterSearch('men')">رجالي</button>
+            <button class="filter-chip" onclick="filterSearch('women')">نسائي</button>
+            <button class="filter-chip" onclick="filterSearch('kids')">أطفال</button>
+            <button class="filter-chip" onclick="filterSearch('sale')">تخفيضات</button>
         </div>
         <div class="products-grid" id="searchResults"></div>
     </div>
@@ -355,34 +358,31 @@
 
             <div class="contact-form">
                 <h3>أرسل لنا رسالة</h3>
-                <form id="contactForm" novalidate>
-                    <div class="form-group">
-                        <label>الاسم الكامل</label>
-                        <input type="text" name="fullName" placeholder="أدخل اسمك الكامل" required>
-                    </div>
-                    <div class="form-group">
-                        <label>البريد الإلكتروني</label>
-                        <input type="email" name="email" placeholder="example@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الموضوع</label>
-                        <select name="subject" required>
-                            <option value="">اختر الموضوع</option>
-                            <option>استفسار عام</option>
-                            <option>طلب منتج</option>
-                            <option>شكوى</option>
-                            <option>اقتراح</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>الرسالة</label>
-                        <textarea name="message" placeholder="اكتب رسالتك هنا..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary" style="width: 100%;">
-                        <i class="fas fa-paper-plane"></i>
-                        إرسال الرسالة
-                    </button>
-                </form>
+                <div class="form-group">
+                    <label>الاسم الكامل</label>
+                    <input type="text" placeholder="أدخل اسمك الكامل">
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label>الموضوع</label>
+                    <select>
+                        <option>استفسار عام</option>
+                        <option>طلب منتج</option>
+                        <option>شكوى</option>
+                        <option>اقتراح</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>الرسالة</label>
+                    <textarea placeholder="اكتب رسالتك هنا..."></textarea>
+                </div>
+                <button class="btn-primary" style="width: 100%;" onclick="showToast('تم إرسال رسالتك بنجاح!')">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال الرسالة
+                </button>
             </div>
         </div>
     </div>
@@ -436,6 +436,6 @@
     </div>
 
     <!-- ملف الجافاسكريبت -->
-    <script src="../dist/bundle.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
