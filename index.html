@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر هيما | هيما ستور</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <title>متجر هيما | Hema Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+<base target="_blank">
 </head>
 <body>
+
+    <!-- ========== شريط أحمر علوي ========== -->
+    <div class="top-accent-bar"></div>
 
     <!-- ========== شريط الإعلانات ========== -->
     <div class="announcement-bar">
         <i class="fas fa-shipping-fast"></i>
-        شحن مجاني على الطلبات فوق 200 ريال | <i class="fas fa-undo"></i> إرجاع مجاني خلال 30 يوم
+        شحن مجاني على الطلبات فوق 50,000 ل.س | <i class="fas fa-undo"></i> إرجاع مجاني خلال 14 يوم
     </div>
 
     <!-- ========== الهيدر ========== -->
@@ -88,13 +92,35 @@
                 </div>
             </div>
             <div class="hero-slide">
-                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1519238263530-99bdd11df2f0?w=1920&q=80')"></div>
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=1920&q=80')"></div>
                 <div class="hero-content">
                     <span class="hero-badge">جديد الأطفال</span>
                     <h1 class="hero-title">أناقة <span>صغارنا</span> تبدأ من هنا</h1>
                     <p class="hero-desc">تشكيلة واسعة من الملابس المريحة والأنيقة للأطفال بجميع الأعمار</p>
                     <a href="#" class="hero-btn" onclick="filterCategory('kids'); return false;">
                         تسوق للأطفال <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-slide">
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=1920&q=80')"></div>
+                <div class="hero-content">
+                    <span class="hero-badge">موسم الأعياد</span>
+                    <h1 class="hero-title">أزياء <span>المناسبات</span> بأرقى التصاميم</h1>
+                    <p class="hero-desc">تشكيلة فاخرة للمناسبات الخاصة والأعياد بأسعار مميزة</p>
+                    <a href="#" class="hero-btn" onclick="scrollToSection('featured'); return false;">
+                        تصفح التشكيلة <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-slide">
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=80')"></div>
+                <div class="hero-content">
+                    <span class="hero-badge">وصل حديثاً</span>
+                    <h1 class="hero-title">إكسسوارات <span>عصرية</span> تكمل إطلالتك</h1>
+                    <p class="hero-desc">حقائب، أحذية، ومجوهرات من أشهر الماركات العالمية</p>
+                    <a href="#" class="hero-btn" onclick="showPage('search'); return false;">
+                        اكتشف المزيد <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
             </div>
@@ -107,7 +133,13 @@
                     <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=200&q=80" alt="عروض نهاية الموسم">
                 </div>
                 <div class="hero-thumb" onclick="goToSlide(2)">
-                    <img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2f0?w=200&q=80" alt="أطفال">
+                    <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&q=80" alt="أطفال">
+                </div>
+                <div class="hero-thumb" onclick="goToSlide(3)">
+                    <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=200&q=80" alt="مناسبات">
+                </div>
+                <div class="hero-thumb" onclick="goToSlide(4)">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=200&q=80" alt="إكسسوارات">
                 </div>
             </div>
         </section>
@@ -118,12 +150,12 @@
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
                     <h3 class="feature-title">شحن سريع</h3>
-                    <p class="feature-desc">توصيل خلال 24-48 ساعة لجميع المدن مع تتبع الطلبات لحظة بلحظة</p>
+                    <p class="feature-desc">توصيل خلال 24-48 ساعة لجميع المحافظات السورية مع تتبع الطلبات لحظة بلحظة</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-undo-alt"></i></div>
                     <h3 class="feature-title">إرجاع سهل</h3>
-                    <p class="feature-desc">إرجاع مجاني خلال 30 يوم مع استرداد كامل المبلغ بدون أسئلة</p>
+                    <p class="feature-desc">إرجاع مجاني خلال 14 يوم مع استرداد كامل المبلغ بدون أسئلة</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
@@ -205,8 +237,8 @@
                     <span>(128 تقييم)</span>
                 </div>
                 <div class="detail-price">
-                    <span class="old" id="detailOldPrice">350 ر.س</span>
-                    <span id="detailPrice">249 ر.س</span>
+                    <span class="old" id="detailOldPrice">350 ل.س</span>
+                    <span id="detailPrice">249 ل.س</span>
                 </div>
                 <p class="detail-desc" id="detailDesc">
                     منتج عالي الجودة مصنوع من أفضل الخامات، يتميز بتصميم أنيق يناسب جميع المناسبات. متوفر بمقاسات وألوان متعددة.
@@ -266,7 +298,7 @@
                 <h3 class="summary-title">ملخص الطلب</h3>
                 <div class="summary-row">
                     <span>المجموع الفرعي</span>
-                    <span id="subtotal">0 ر.س</span>
+                    <span id="subtotal">0 ل.س</span>
                 </div>
                 <div class="summary-row">
                     <span>الشحن</span>
@@ -274,11 +306,11 @@
                 </div>
                 <div class="summary-row">
                     <span>الخصم</span>
-                    <span id="discount">0 ر.س</span>
+                    <span id="discount">0 ل.س</span>
                 </div>
                 <div class="summary-row total">
                     <span>الإجمالي</span>
-                    <span id="total">0 ر.س</span>
+                    <span id="total">0 ل.س</span>
                 </div>
                 <button class="btn-primary checkout-btn" onclick="showToast('جاري إتمام عملية الشراء...')">
                     <i class="fas fa-credit-card"></i>
@@ -291,7 +323,7 @@
     <!-- ========== صفحة البحث ========== -->
     <div class="search-page" id="searchPage">
         <div class="search-header">
-            <h2>نتائج البحث</h2>
+            <h2 id="searchTitle">نتائج البحث</h2>
             <p style="color: var(--gray);">تم العثور على <strong id="searchCount">0</strong> منتج</p>
         </div>
         <div class="search-filters">
@@ -319,7 +351,7 @@
                     <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
                     <div class="contact-item-info">
                         <h4>العنوان</h4>
-                        <p>طريق الملك فهد، الرياض، المملكة العربية السعودية</p>
+                        <p>شارع الثورة، دمشق، الجمهورية العربية السورية</p>
                     </div>
                 </div>
 
@@ -327,7 +359,7 @@
                     <div class="contact-item-icon"><i class="fas fa-phone-alt"></i></div>
                     <div class="contact-item-info">
                         <h4>الهاتف</h4>
-                        <p>+966 50 123 4567</p>
+                        <p>+963 50 123 4567</p>
                     </div>
                 </div>
 
@@ -343,7 +375,7 @@
                     <div class="contact-item-icon"><i class="fas fa-clock"></i></div>
                     <div class="contact-item-info">
                         <h4>ساعات العمل</h4>
-                        <p>السبت - الخميس: 9:00 ص - 11:00 م<br>الجمعة: 4:00 م - 11:00 م</p>
+                        <p>السبت - الخميس: 9:00 ص - 9:00 م<br>الجمعة: 2:00 م - 9:00 م</p>
                     </div>
                 </div>
 
@@ -352,7 +384,7 @@
                     <a href="https://twitter.com/haimastore" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
                     <a href="https://snapchat.com/add/haimastore" class="social-link" target="_blank"><i class="fab fa-snapchat-ghost"></i></a>
                     <a href="https://tiktok.com/@haimastore" class="social-link" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://wa.me/966501234567" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://wa.me/963501234567" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
 
@@ -395,7 +427,7 @@
                     <div class="logo-icon"><i class="fas fa-crown"></i></div>
                     <div class="logo-text">هيما <span>ستور</span></div>
                 </div>
-                <p>متجر هيما وجهتك الأولى للأزياء العصرية بأجود الخامات وأفضل الأسعار. نقدم تجربة تسوق فريدة تجمع بين الأناقة والجودة.</p>
+                <p>متجر هيما وجهتك الأولى للأزياء العصرية بأجود الخامات وأفضل الأسعار في سوريا. نقدم تجربة تسوق فريدة تجمع بين الأناقة والجودة.</p>
             </div>
             <div>
                 <h4 class="footer-title">روابط سريعة</h4>
@@ -410,9 +442,9 @@
                 <h4 class="footer-title">خدمة العملاء</h4>
                 <ul class="footer-links">
                     <li><a href="#" onclick="showPage('contact'); return false;">تواصل معنا</a></li>
-                    <li><a href="#">سياسة الإرجاع</a></li>
-                    <li><a href="#">شروط الاستخدام</a></li>
-                    <li><a href="#">الأسئلة الشائعة</a></li>
+                    <li><a href="#" onclick="showReturnPolicy(); return false;">سياسة الإرجاع</a></li>
+                    <li><a href="#" onclick="showTerms(); return false;">شروط الاستخدام</a></li>
+                    <li><a href="#" onclick="showFAQ(); return false;">الأسئلة الشائعة</a></li>
                 </ul>
             </div>
             <div>
