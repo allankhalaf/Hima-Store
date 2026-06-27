@@ -65,11 +65,7 @@ body {
 }
 
 /* ===== Top Accent Bar ===== */
-.top-accent-bar {
-    height: 4px;
-    background: var(--accent);
-    width: 100%;
-}
+
 
 /* ===== Announcement Bar ===== */
 .announcement-bar {
