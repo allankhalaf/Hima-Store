@@ -14,12 +14,6 @@
     <!-- ========== شريط أحمر علوي ========== -->
     <div class="top-accent-bar"></div>
 
-    <!-- ========== شريط الإعلانات ========== -->
-    <div class="announcement-bar">
-        <i class="fas fa-shipping-fast"></i>
-        شحن مجاني على الطلبات فوق 50,000 ل.س | <i class="fas fa-undo"></i> إرجاع مجاني خلال 14 يوم
-    </div>
-
     <!-- ========== الهيدر ========== -->
     <header class="header" id="header">
         <div class="header-top">
@@ -46,7 +40,7 @@
                 </button>
             </div>
 
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="فتح القائمة">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -57,12 +51,31 @@
                 <li><a href="#" onclick="filterCategory('men'); return false;">رجالي</a></li>
                 <li><a href="#" onclick="filterCategory('women'); return false;">نسائي</a></li>
                 <li><a href="#" onclick="filterCategory('kids'); return false;">أطفال</a></li>
-                <li><a href="#" onclick="showPage('search'); return false;">الأكثر مبيعاً</a></li>
-                <li><a href="#" onclick="showPage('search'); return false;">الماركات</a></li>
+                <li><a href="#" onclick="showBestsellers(); return false;">الأكثر مبيعاً</a></li>
+                <li><a href="#" onclick="showBrands(); return false;">الماركات</a></li>
                 <li><a href="#" onclick="showPage('contact'); return false;">تواصل معنا</a></li>
             </ul>
         </nav>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- Mobile Side Menu -->
+    <div class="mobile-side-menu" id="mobileSideMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()" aria-label="إغلاق القائمة">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-nav-links">
+            <li><a href="#" onclick="showPage('home'); toggleMobileMenu(); return false;">الرئيسية</a></li>
+            <li><a href="#" onclick="filterCategory('men'); toggleMobileMenu(); return false;">رجالي</a></li>
+            <li><a href="#" onclick="filterCategory('women'); toggleMobileMenu(); return false;">نسائي</a></li>
+            <li><a href="#" onclick="filterCategory('kids'); toggleMobileMenu(); return false;">أطفال</a></li>
+            <li><a href="#" onclick="showBestsellers(); toggleMobileMenu(); return false;">الأكثر مبيعاً</a></li>
+            <li><a href="#" onclick="showBrands(); toggleMobileMenu(); return false;">الماركات</a></li>
+            <li><a href="#" onclick="showPage('contact'); toggleMobileMenu(); return false;">تواصل معنا</a></li>
+        </ul>
+    </div>
 
     <!-- ========== الصفحة الرئيسية ========== -->
     <div id="homePage">
@@ -123,6 +136,23 @@
                         اكتشف المزيد <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
+            </div>
+
+            <!-- Slider Navigation Arrows -->
+            <button class="slider-arrow prev" onclick="nextSlide()" aria-label="الشريحة التالية">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="slider-arrow next" onclick="prevSlide()" aria-label="الشريحة السابقة">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <!-- Slider Dots -->
+            <div class="slider-dots">
+                <button class="slider-dot active" onclick="goToSlide(0)" aria-label="شريحة 1"></button>
+                <button class="slider-dot" onclick="goToSlide(1)" aria-label="شريحة 2"></button>
+                <button class="slider-dot" onclick="goToSlide(2)" aria-label="شريحة 3"></button>
+                <button class="slider-dot" onclick="goToSlide(3)" aria-label="شريحة 4"></button>
+                <button class="slider-dot" onclick="goToSlide(4)" aria-label="شريحة 5"></button>
             </div>
 
             <div class="hero-thumbs">
@@ -344,6 +374,26 @@
             <p class="section-desc">فريقنا جاهز للإجابة على جميع استفساراتك</p>
         </div>
         <div class="contact-grid">
+            <div class="contact-map-card">
+                <h3><i class="fas fa-map-marked-alt"></i> موقع المتجر</h3>
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.058!2d36.2765!3d33.5138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDMwJzQ5LjciTiAzNsKwMTYnMzUuNCJF!5e0!3m2!1sar!2s!4v1700000000000!5m2!1sar!2s" 
+                        width="100%" 
+                        height="300" 
+                        style="border:0; border-radius: 16px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                <div class="map-info">
+                    <p><i class="fas fa-map-marker-alt"></i> شارع الثورة، دمشق، سوريا</p>
+                    <a href="https://maps.google.com/?q=33.5138,36.2765" target="_blank" class="map-directions-btn">
+                        <i class="fas fa-directions"></i> الاتجاهات على الخريطة
+                    </a>
+                </div>
+            </div>
             <div class="contact-info-card">
                 <h3>معلومات التواصل</h3>
 
@@ -380,38 +430,52 @@
                 </div>
 
                 <div class="social-links">
-                    <a href="https://instagram.com/haimastore" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://twitter.com/haimastore" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="https://snapchat.com/add/haimastore" class="social-link" target="_blank"><i class="fab fa-snapchat-ghost"></i></a>
-                    <a href="https://tiktok.com/@haimastore" class="social-link" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://wa.me/963501234567" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/haimastore" class="social-link" target="_blank" title="إنستغرام"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/haimastore" class="social-link" target="_blank" title="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/haimastore" class="social-link" target="_blank" title="تويتر / إكس"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://snapchat.com/add/haimastore" class="social-link" target="_blank" title="سناب شات"><i class="fab fa-snapchat-ghost"></i></a>
+                    <a href="https://tiktok.com/@haimastore" class="social-link" target="_blank" title="تيك توك"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://wa.me/963501234567" class="social-link" target="_blank" title="واتساب"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://youtube.com/@haimastore" class="social-link" target="_blank" title="يوتيوب"><i class="fab fa-youtube"></i></a>
+                    <a href="https://t.me/haimastore" class="social-link" target="_blank" title="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
                 </div>
             </div>
 
             <div class="contact-form">
                 <h3>أرسل لنا رسالة</h3>
                 <div class="form-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" placeholder="أدخل اسمك الكامل">
+                    <label>الاسم الكامل <span class="required">*</span></label>
+                    <input type="text" id="contactName" placeholder="أدخل اسمك الكامل" onblur="validateName()">
+                    <span class="validation-msg" id="nameMsg"></span>
                 </div>
                 <div class="form-group">
-                    <label>البريد الإلكتروني</label>
-                    <input type="email" placeholder="example@email.com">
+                    <label>البريد الإلكتروني <span class="required">*</span></label>
+                    <input type="email" id="contactEmail" placeholder="example@email.com" onblur="validateEmail()">
+                    <span class="validation-msg" id="emailMsg"></span>
                 </div>
                 <div class="form-group">
-                    <label>الموضوع</label>
-                    <select>
-                        <option>استفسار عام</option>
-                        <option>طلب منتج</option>
-                        <option>شكوى</option>
-                        <option>اقتراح</option>
+                    <label>رقم الهاتف</label>
+                    <input type="tel" id="contactPhone" placeholder="+963 50 123 4567" onblur="validatePhone()">
+                    <span class="validation-msg" id="phoneMsg"></span>
+                </div>
+                <div class="form-group">
+                    <label>الموضوع <span class="required">*</span></label>
+                    <select id="contactSubject">
+                        <option value="">اختر الموضوع...</option>
+                        <option value="general">استفسار عام</option>
+                        <option value="order">طلب منتج</option>
+                        <option value="complaint">شكوى</option>
+                        <option value="suggestion">اقتراح</option>
+                        <option value="other">أخرى</option>
                     </select>
+                    <span class="validation-msg" id="subjectMsg"></span>
                 </div>
                 <div class="form-group">
-                    <label>الرسالة</label>
-                    <textarea placeholder="اكتب رسالتك هنا..."></textarea>
+                    <label>الرسالة <span class="required">*</span></label>
+                    <textarea id="contactMessage" placeholder="اكتب رسالتك هنا..." onblur="validateMessage()"></textarea>
+                    <span class="validation-msg" id="messageMsg"></span>
                 </div>
-                <button class="btn-primary" style="width: 100%;" onclick="showToast('تم إرسال رسالتك بنجاح!')">
+                <button class="btn-primary" style="width: 100%;" onclick="submitContactForm()">
                     <i class="fas fa-paper-plane"></i>
                     إرسال الرسالة
                 </button>

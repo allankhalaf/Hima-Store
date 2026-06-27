@@ -217,6 +217,8 @@ function init() {
     renderProducts();
     renderBrands();
     startSlider();
+    initSliderTouch();
+    initSliderKeyboard();
     setupEventListeners();
 }
 
@@ -388,10 +390,18 @@ function showProductDetail(id) {
     const price = safeNumber(product.price, 0);
     const oldPrice = safeNumber(product.oldPrice, 0);
 
-    document.getElementById('detailMainImage').src = product.image;
-    document.getElementById('detailMainImage').onerror = function() {
-        this.src = 'https://via.placeholder.com/600x550/e94560/ffffff?text=' + encodeURIComponent(product.name);
+    // Update main image with loading state
+    const mainImg = document.getElementById('detailMainImage');
+    mainImg.style.opacity = '0.5';
+    mainImg.src = product.image;
+    mainImg.onload = function() {
+        mainImg.style.opacity = '1';
     };
+    mainImg.onerror = function() {
+        this.src = 'https://via.placeholder.com/600x550/e94560/ffffff?text=' + encodeURIComponent(product.name);
+        this.style.opacity = '1';
+    };
+
     document.getElementById('detailName').textContent = product.name;
     document.getElementById('detailCategoryLabel').textContent = product.category === 'men' ? 'رجالي' : product.category === 'women' ? 'نسائي' : 'أطفال';
     document.getElementById('detailCategoryLink').textContent = product.category === 'men' ? 'رجالي' : product.category === 'women' ? 'نسائي' : 'أطفال';
@@ -408,13 +418,21 @@ function showProductDetail(id) {
 
     document.getElementById('qtyInput').value = '1';
 
-    // معرض الصور المصغرة
+    // معرض الصور المصغرة - create unique thumbs with different angles/colors
     const thumbs = [product.image, product.image, product.image, product.image];
     document.getElementById('detailThumbs').innerHTML = thumbs.map((img, i) => `
         <div class="gallery-thumb ${i === 0 ? 'active' : ''}" onclick="changeGalleryImage('${img}', this)">
-            <img src="${img}" alt="" onerror="this.src='https://via.placeholder.com/80x80/e94560/ffffff?text=${i+1}'">
+            <img src="${img}" alt="${product.name} - صورة ${i+1}" onerror="this.src='https://via.placeholder.com/80x80/e94560/ffffff?text=${i+1}'">
         </div>
     `).join('');
+
+    // Reset size and color selections
+    document.querySelectorAll('.size-option').forEach((opt, idx) => {
+        opt.classList.toggle('active', idx === 1); // Select M by default
+    });
+    document.querySelectorAll('.color-option').forEach((opt, idx) => {
+        opt.classList.toggle('active', idx === 0); // Select first color by default
+    });
 
     showPage('product');
 }
@@ -651,25 +669,122 @@ function filterSearch(type) {
 }
 
 // ============================================
-// دوال عارض الشرائح
+// دوال عارض الشرائح - محسنة
 // ============================================
+
+let sliderInterval;
+let isSliderPaused = false;
 
 function goToSlide(index) {
     const slides = document.querySelectorAll('.hero-slide');
     const thumbs = document.querySelectorAll('.hero-thumb');
+    const dots = document.querySelectorAll('.slider-dot');
 
-    slides.forEach((s, i) => s.classList.toggle('active', i === index));
-    thumbs.forEach((t, i) => t.classList.toggle('active', i === index));
+    if (slides.length === 0) return;
+
+    // Ensure index is within bounds
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+
+    slides.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+    });
+
+    thumbs.forEach((t, i) => {
+        t.classList.toggle('active', i === index);
+    });
+
+    if (dots.length > 0) {
+        dots.forEach((d, i) => {
+            d.classList.toggle('active', i === index);
+        });
+    }
 
     currentSlide = index;
 }
 
+function nextSlide() {
+    const slides = document.querySelectorAll('.hero-slide');
+    goToSlide((currentSlide + 1) % slides.length);
+}
+
+function prevSlide() {
+    const slides = document.querySelectorAll('.hero-slide');
+    goToSlide((currentSlide - 1 + slides.length) % slides.length);
+}
+
 function startSlider() {
-    setInterval(() => {
-        const slides = document.querySelectorAll('.hero-slide');
-        currentSlide = (currentSlide + 1) % slides.length;
-        goToSlide(currentSlide);
+    // Clear any existing interval
+    if (sliderInterval) clearInterval(sliderInterval);
+
+    sliderInterval = setInterval(() => {
+        if (!isSliderPaused) {
+            nextSlide();
+        }
     }, 5000);
+}
+
+function pauseSlider() {
+    isSliderPaused = true;
+}
+
+function resumeSlider() {
+    isSliderPaused = false;
+}
+
+// Touch/Swipe support for mobile
+function initSliderTouch() {
+    const heroSection = document.querySelector('.hero-section');
+    if (!heroSection) return;
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    heroSection.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        pauseSlider();
+    }, { passive: true });
+
+    heroSection.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+        resumeSlider();
+    }, { passive: true });
+
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                nextSlide(); // Swipe left -> next
+            } else {
+                prevSlide(); // Swipe right -> previous
+            }
+        }
+    }
+
+    // Pause on hover
+    heroSection.addEventListener('mouseenter', pauseSlider);
+    heroSection.addEventListener('mouseleave', resumeSlider);
+}
+
+// Keyboard navigation
+function initSliderKeyboard() {
+    document.addEventListener('keydown', (e) => {
+        const heroSection = document.querySelector('.hero-section');
+        if (!heroSection) return;
+
+        // Only respond if hero is visible
+        const rect = heroSection.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+        if (e.key === 'ArrowRight') {
+            prevSlide();
+        } else if (e.key === 'ArrowLeft') {
+            nextSlide();
+        }
+    });
 }
 
 // ============================================
@@ -683,10 +798,7 @@ function showToast(message) {
     setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-function toggleMobileMenu() {
-    const nav = document.getElementById('navBar');
-    nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
-}
+
 
 // ============================================
 // تشغيل عند تحميل الصفحة
@@ -937,6 +1049,237 @@ function initParallax() {
     });
 }
 
+
+
+// ============================================
+// عرض الأكثر مبيعاً
+// ============================================
+
+function showBestsellers() {
+    // Get bestseller products (products 9-16 in our array)
+    const bestsellers = products.slice(8, 16);
+
+    // Hide all pages first (same as showPage does)
+    document.getElementById('homePage').style.display = 'none';
+    document.getElementById('productDetailPage').classList.remove('active');
+    document.getElementById('cartPage').classList.remove('active');
+    document.getElementById('searchPage').classList.remove('active');
+    document.getElementById('contactPage').classList.remove('active');
+
+    // Remove any info page wrapper
+    const infoWrapper = document.querySelector('.info-page-wrapper');
+    if (infoWrapper) infoWrapper.remove();
+
+    // Update search page UI
+    const searchTitle = document.getElementById('searchTitle');
+    if (searchTitle) {
+        searchTitle.textContent = 'الأكثر مبيعاً';
+    }
+
+    document.getElementById('searchCount').textContent = bestsellers.length;
+    document.getElementById('searchResults').innerHTML = bestsellers.map(p => createProductCard(p)).join('');
+
+    // Reset filter chips
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+
+    // Show search page directly (without calling performSearch)
+    document.getElementById('searchPage').classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ============================================
+// عرض الماركات
+// ============================================
+
+function showBrands() {
+    // Hide all other pages first
+    document.getElementById('productDetailPage').classList.remove('active');
+    document.getElementById('cartPage').classList.remove('active');
+    document.getElementById('searchPage').classList.remove('active');
+    document.getElementById('contactPage').classList.remove('active');
+
+    // Remove any info page wrapper
+    const infoWrapper = document.querySelector('.info-page-wrapper');
+    if (infoWrapper) infoWrapper.remove();
+
+    // Show home page
+    document.getElementById('homePage').style.display = 'block';
+
+    // Scroll to brands section
+    setTimeout(() => {
+        const brandsSection = document.getElementById('brandsGrid');
+        if (brandsSection) {
+            brandsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, 100);
+}
+
+
+// ============================================
+// Mobile Side Menu Toggle
+// ============================================
+
+function toggleMobileMenu() {
+    const overlay = document.getElementById('mobileMenuOverlay');
+    const sideMenu = document.getElementById('mobileSideMenu');
+    const body = document.body;
+
+    if (!overlay || !sideMenu) return;
+
+    const isOpen = sideMenu.classList.contains('active');
+
+    if (isOpen) {
+        // Close
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        body.style.overflow = '';
+    } else {
+        // Open
+        overlay.classList.add('active');
+        sideMenu.classList.add('active');
+        body.style.overflow = 'hidden';
+    }
+}
+
+
+
+// ============================================
+// Form Validation Functions
+// ============================================
+
+function validateName() {
+    const input = document.getElementById('contactName');
+    const msg = document.getElementById('nameMsg');
+    const value = input.value.trim();
+
+    if (!value) {
+        showError(input, msg, 'الرجاء إدخال الاسم الكامل');
+        return false;
+    }
+    if (value.length < 3) {
+        showError(input, msg, 'الاسم يجب أن يكون 3 أحرف على الأقل');
+        return false;
+    }
+    if (!/^[؀-ۿa-zA-Z\s]+$/.test(value)) {
+        showError(input, msg, 'الاسم يجب أن يحتوي على حروف فقط');
+        return false;
+    }
+    showSuccess(input, msg, '✓ الاسم صحيح');
+    return true;
+}
+
+function validateEmail() {
+    const input = document.getElementById('contactEmail');
+    const msg = document.getElementById('emailMsg');
+    const value = input.value.trim();
+
+    if (!value) {
+        showError(input, msg, 'الرجاء إدخال البريد الإلكتروني');
+        return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+        showError(input, msg, 'الرجاء إدخال بريد إلكتروني صحيح');
+        return false;
+    }
+    showSuccess(input, msg, '✓ البريد الإلكتروني صحيح');
+    return true;
+}
+
+function validatePhone() {
+    const input = document.getElementById('contactPhone');
+    const msg = document.getElementById('phoneMsg');
+    const value = input.value.trim();
+
+    if (!value) {
+        msg.textContent = '';
+        msg.className = 'validation-msg';
+        input.classList.remove('error', 'success');
+        return true; // Phone is optional
+    }
+
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    if (!phoneRegex.test(value.replace(/\s/g, ''))) {
+        showError(input, msg, 'الرجاء إدخال رقم هاتف صحيح');
+        return false;
+    }
+    showSuccess(input, msg, '✓ رقم الهاتف صحيح');
+    return true;
+}
+
+function validateSubject() {
+    const input = document.getElementById('contactSubject');
+    const msg = document.getElementById('subjectMsg');
+    const value = input.value;
+
+    if (!value) {
+        showError(input, msg, 'الرجاء اختيار الموضوع');
+        return false;
+    }
+    showSuccess(input, msg, '✓ تم اختيار الموضوع');
+    return true;
+}
+
+function validateMessage() {
+    const input = document.getElementById('contactMessage');
+    const msg = document.getElementById('messageMsg');
+    const value = input.value.trim();
+
+    if (!value) {
+        showError(input, msg, 'الرجاء كتابة الرسالة');
+        return false;
+    }
+    if (value.length < 10) {
+        showError(input, msg, 'الرسالة يجب أن تكون 10 أحرف على الأقل');
+        return false;
+    }
+    showSuccess(input, msg, '✓ الرسالة صحيحة');
+    return true;
+}
+
+function showError(input, msgElement, message) {
+    input.classList.remove('success', 'validating');
+    input.classList.add('error');
+    msgElement.textContent = '✗ ' + message;
+    msgElement.className = 'validation-msg error';
+}
+
+function showSuccess(input, msgElement, message) {
+    input.classList.remove('error');
+    input.classList.add('success', 'validating');
+    msgElement.textContent = message;
+    msgElement.className = 'validation-msg success';
+}
+
+function submitContactForm() {
+    const isNameValid = validateName();
+    const isEmailValid = validateEmail();
+    const isPhoneValid = validatePhone();
+    const isSubjectValid = validateSubject();
+    const isMessageValid = validateMessage();
+
+    if (isNameValid && isEmailValid && isPhoneValid && isSubjectValid && isMessageValid) {
+        showToast('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
+
+        // Reset form
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactEmail').value = '';
+        document.getElementById('contactPhone').value = '';
+        document.getElementById('contactSubject').value = '';
+        document.getElementById('contactMessage').value = '';
+
+        // Clear validation states
+        document.querySelectorAll('.validation-msg').forEach(el => {
+            el.textContent = '';
+            el.className = 'validation-msg';
+        });
+        document.querySelectorAll('.form-group input, .form-group textarea, .form-group select').forEach(el => {
+            el.classList.remove('error', 'success', 'validating');
+        });
+    } else {
+        showToast('الرجاء تصحيح الأخطاء أولاً');
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     init();
