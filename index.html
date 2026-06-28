@@ -53,6 +53,7 @@
                 <li><a href="#" onclick="filterCategory('kids'); return false;">أطفال</a></li>
                 <li><a href="#" onclick="showBestsellers(); return false;">الأكثر مبيعاً</a></li>
                 <li><a href="#" onclick="showBrands(); return false;">الماركات</a></li>
+                <li><a href="#" onclick="showPage('agents'); return false;">وكلائنا</a></li>
                 <li><a href="#" onclick="showPage('contact'); return false;">تواصل معنا</a></li>
             </ul>
         </nav>
@@ -73,6 +74,7 @@
             <li><a href="#" onclick="filterCategory('kids'); toggleMobileMenu(); return false;">أطفال</a></li>
             <li><a href="#" onclick="showBestsellers(); toggleMobileMenu(); return false;">الأكثر مبيعاً</a></li>
             <li><a href="#" onclick="showBrands(); toggleMobileMenu(); return false;">الماركات</a></li>
+            <li><a href="#" onclick="showPage('agents'); toggleMobileMenu(); return false;">وكلائنا</a></li>
             <li><a href="#" onclick="showPage('contact'); toggleMobileMenu(); return false;">تواصل معنا</a></li>
         </ul>
     </div>
@@ -483,6 +485,23 @@
         </div>
     </div>
 
+    <!-- ========== صفحة وكلائنا ========== -->
+    <div class="agents-page" id="agentsPage">
+        <div class="breadcrumb">
+            <a href="#" onclick="showPage('home'); return false;">الرئيسية</a>
+            <i class="fas fa-chevron-left" style="font-size: 10px;"></i>
+            <span>وكلائنا في المحافظات</span>
+        </div>
+        
+        <div class="section-header" style="margin-bottom: 40px;">
+            <span class="section-label">شبكة التوزيع</span>
+            <h2 class="section-title">وكلائنا في المحافظات</h2>
+            <p class="section-desc">نوفر لك خدماتنا في أهم المحافظات السورية، تفضل بزيارة أقرب وكيل</p>
+        </div>
+
+        <div class="agents-grid" id="agentsGrid"></div>
+    </div>
+
     <!-- ========== الفوتر ========== -->
     <footer class="footer">
         <div class="footer-grid">
@@ -500,6 +519,8 @@
                     <li><a href="#" onclick="filterCategory('men'); return false;">رجالي</a></li>
                     <li><a href="#" onclick="filterCategory('women'); return false;">نسائي</a></li>
                     <li><a href="#" onclick="filterCategory('kids'); return false;">أطفال</a></li>
+                    <li><a href="#" onclick="showPage('agents'); return false;">وكلائنا</a></li>
+                    <li><a href="#" onclick="showPage('contact'); return false;">تواصل معنا</a></li>
                 </ul>
             </div>
             <div>

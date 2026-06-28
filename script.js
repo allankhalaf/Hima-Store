@@ -191,6 +191,91 @@ const products = [
     }
 ];
 
+
+// بيانات الوكلاء في المحافظات
+const agents = [
+    {
+        id: 1,
+        governorate: "حلب",
+        name: "وكيل حلب الرئيسي",
+        address: "شارع النيل، مقابل جامع الحسن، حي العزيزية، حلب",
+        phone: "+963 21 212 3456",
+        mobile: "+963 933 456 789",
+        hours: "السبت - الخميس: 9:00 ص - 9:00 م",
+        friday: "الجمعة: 2:00 م - 8:00 م",
+        image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80",
+        social: {
+            whatsapp: "963933456789",
+            facebook: "haima.aleppo",
+            instagram: "haima.aleppo"
+        }
+    },
+    {
+        id: 2,
+        governorate: "حمص",
+        name: "وكيل حمص",
+        address: "شارع الحضارة، حي الوعر، بالقرب من دوار الكرامة، حمص",
+        phone: "+963 31 234 5678",
+        mobile: "+963 944 567 890",
+        hours: "السبت - الخميس: 9:00 ص - 8:30 م",
+        friday: "الجمعة: 2:00 م - 7:30 م",
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80",
+        social: {
+            whatsapp: "963944567890",
+            facebook: "haima.homs",
+            instagram: "haima.homs"
+        }
+    },
+    {
+        id: 3,
+        governorate: "اللاذقية",
+        name: "وكيل اللاذقية",
+        address: "شارع 8 آذار، حي الصليبة، بجانب مول اللاذقية، اللاذقية",
+        phone: "+963 41 345 6789",
+        mobile: "+963 955 678 901",
+        hours: "السبت - الخميس: 9:30 ص - 9:00 م",
+        friday: "الجمعة: 2:30 م - 8:00 م",
+        image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=600&q=80",
+        social: {
+            whatsapp: "963955678901",
+            facebook: "haima.latakia",
+            instagram: "haima.latakia"
+        }
+    },
+    {
+        id: 4,
+        governorate: "دير الزور",
+        name: "وكيل دير الزور",
+        address: "شارع الجماهير، حي الحميدية، بالقرب من ساحة العمال، دير الزور",
+        phone: "+963 25 456 7890",
+        mobile: "+963 966 789 012",
+        hours: "السبت - الخميس: 9:00 ص - 8:00 م",
+        friday: "الجمعة: 2:00 م - 7:00 م",
+        image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
+        social: {
+            whatsapp: "963966789012",
+            facebook: "haima.deir",
+            instagram: "haima.deir"
+        }
+    },
+    {
+        id: 5,
+        governorate: "درعا",
+        name: "وكيل درعا",
+        address: "شارع الثورة، حي المطار، بجانب دوار الصناعة، درعا",
+        phone: "+963 15 567 8901",
+        mobile: "+963 977 890 123",
+        hours: "السبت - الخميس: 9:00 ص - 8:00 م",
+        friday: "الجمعة: 2:00 م - 7:00 م",
+        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80",
+        social: {
+            whatsapp: "963977890123",
+            facebook: "haima.daraa",
+            instagram: "haima.daraa"
+        }
+    }
+];
+
 // بيانات الماركات - عدّل هنا
 const brands = [
     { name: "Nike", icon: "fa-running", count: "+120 منتج" },
@@ -212,6 +297,79 @@ let currentQty = 1;
 // ============================================
 // دوال التهيئة
 // ============================================
+
+
+// ============================================
+// دوال صفحة الوكلاء
+// ============================================
+
+function renderAgents() {
+    const grid = document.getElementById('agentsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = agents.map(agent => `
+        <div class="agent-card">
+            <div class="agent-image">
+                <img src="${agent.image}" alt="وكيل ${agent.governorate}" onerror="this.src='https://via.placeholder.com/600x300/1a1a2e/ffffff?text=${encodeURIComponent(agent.governorate)}'">
+                <div class="agent-governorate-badge">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ${agent.governorate}
+                </div>
+            </div>
+            <div class="agent-info">
+                <h3 class="agent-name">${agent.name}</h3>
+
+                <div class="agent-detail">
+                    <div class="agent-detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="agent-detail-content">
+                        <span class="agent-detail-label">العنوان</span>
+                        <p>${agent.address}</p>
+                    </div>
+                </div>
+
+                <div class="agent-detail">
+                    <div class="agent-detail-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="agent-detail-content">
+                        <span class="agent-detail-label">الهاتف</span>
+                        <p><a href="tel:${agent.phone}">${agent.phone}</a></p>
+                    </div>
+                </div>
+
+                <div class="agent-detail">
+                    <div class="agent-detail-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="agent-detail-content">
+                        <span class="agent-detail-label">الجوال</span>
+                        <p><a href="tel:${agent.mobile}">${agent.mobile}</a></p>
+                    </div>
+                </div>
+
+                <div class="agent-detail">
+                    <div class="agent-detail-icon"><i class="fas fa-clock"></i></div>
+                    <div class="agent-detail-content">
+                        <span class="agent-detail-label">ساعات الدوام</span>
+                        <p>${agent.hours}</p>
+                        <p style="color: var(--accent); font-size: 13px;">${agent.friday}</p>
+                    </div>
+                </div>
+
+                <div class="agent-social">
+                    <a href="https://wa.me/${agent.social.whatsapp}" class="agent-social-link whatsapp" target="_blank" title="واتساب">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://facebook.com/${agent.social.facebook}" class="agent-social-link facebook" target="_blank" title="فيسبوك">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://instagram.com/${agent.social.instagram}" class="agent-social-link instagram" target="_blank" title="إنستغرام">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="tel:${agent.mobile}" class="agent-social-link phone" title="اتصال">
+                        <i class="fas fa-phone-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
 function init() {
     renderProducts();
@@ -350,6 +508,7 @@ function showPage(page) {
     document.getElementById('cartPage').classList.remove('active');
     document.getElementById('searchPage').classList.remove('active');
     document.getElementById('contactPage').classList.remove('active');
+    document.getElementById('agentsPage').classList.remove('active');
 
     // إظهار الصفحة المطلوبة
     if (page === 'home') {
@@ -368,6 +527,10 @@ function showPage(page) {
         window.scrollTo(0, 0);
     } else if (page === 'contact') {
         document.getElementById('contactPage').classList.add('active');
+        window.scrollTo(0, 0);
+    } else if (page === 'agents') {
+        document.getElementById('agentsPage').classList.add('active');
+        renderAgents();
         window.scrollTo(0, 0);
     }
 }
@@ -965,6 +1128,7 @@ function showInfoPage(content) {
     document.getElementById('cartPage').classList.remove('active');
     document.getElementById('searchPage').classList.remove('active');
     document.getElementById('contactPage').classList.remove('active');
+    document.getElementById('agentsPage').classList.remove('active');
 
     // Remove any existing info page
     const existing = document.querySelector('.info-page-wrapper');
@@ -1065,6 +1229,7 @@ function showBestsellers() {
     document.getElementById('cartPage').classList.remove('active');
     document.getElementById('searchPage').classList.remove('active');
     document.getElementById('contactPage').classList.remove('active');
+    document.getElementById('agentsPage').classList.remove('active');
 
     // Remove any info page wrapper
     const infoWrapper = document.querySelector('.info-page-wrapper');
@@ -1097,6 +1262,7 @@ function showBrands() {
     document.getElementById('cartPage').classList.remove('active');
     document.getElementById('searchPage').classList.remove('active');
     document.getElementById('contactPage').classList.remove('active');
+    document.getElementById('agentsPage').classList.remove('active');
 
     // Remove any info page wrapper
     const infoWrapper = document.querySelector('.info-page-wrapper');
